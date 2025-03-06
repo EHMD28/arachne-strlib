@@ -18,8 +18,13 @@ typedef struct ArachneString {
 extern struct ArachneString arachne_new_str(const char* s);
 
 /**
+ * @brief  Creates a new Arachne String attached to a string, starting at a certain point in the string.
+ */
+extern struct ArachneString arachne_new_str_ws(const char* s, size_t start);
+
+/**
  * @brief Creates a new instance of an Arachne String attached to a string. Uses `start` and `end` parameters
- * to create a range that goes from s[start] up to and including s[end].
+ * to create a range that goes from s[start] up to and excluding s[end].
  */
 extern struct ArachneString arachne_new_range(const char* s, size_t start, size_t end);
 
@@ -35,7 +40,7 @@ extern void arachne_set_range(struct ArachneString* astr, size_t start, size_t e
 
 /**
  * @brief Returns a string containing the characters in a string from the start of an Arachne String's
- * range up to and including the end. WARNING. This does use dynamic memory allocation, so it is important
+ * range up to and excluding the end. WARNING. This does use dynamic memory allocation, so it is important
  * to call arachne_free() once you are done using an ArachneString.
  */
 extern const char* arachne_get_range(struct ArachneString* astr);
@@ -47,11 +52,17 @@ extern const char* arachne_get_range(struct ArachneString* astr);
 extern void arachne_free(struct ArachneString* astr);
 
 /**
- * @brief Each call to this function will read once word from the attached string. A "word" in this case
+ * @brief Each call to this function will read one word from the attached string. A "word" in this case
  * refers to a sequence of non-space characters (space characters including '\n' and '\0'). Subsequent
  * calls to this function will read the next word. This function will return null if there are are no more
  * words to read. 
  */
 extern const char* arachne_read_word(struct ArachneString* astr);
+
+/**
+ * @brief Each calls to this function will read word from the attached string until either the 
+ * delimiter character is encountered or a NULL terminator is encountered.
+ */
+extern const char* arachne_read_word_wd(struct ArachneString* astr, char delimiter);
 
 #endif
